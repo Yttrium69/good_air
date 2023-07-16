@@ -1,0 +1,163 @@
+.page_title{
+    font-weight: 700;
+    font-size: 40px;
+}
+
+.search_comp{}
+    .search_comp .comp_title{
+        font-size: 24px;
+        margin-top: 17px;
+    }
+    .search_comp .palnt_ID_sect{
+        margin-top: 25px;
+    }
+        .search_comp .palnt_ID_sect input{
+            width: 570px;
+            height: 70px;
+            border: 1px solid #b5b5b5;
+            border-radius: 35px;
+            padding: 0px 30px;
+            margin-top: 22px;
+            
+        }
+        @media screen and (max-width:640px){
+            .search_comp .palnt_ID_sect input{
+                width:100%;
+                box-sizing: border-box;
+            }
+        }
+    .search_comp .matter_sect{}   
+        .search_comp .matter_sect .sect_title{
+            margin-top: 30px;
+        }
+        .search_comp .matter_sect .matter_option{
+            display: flex;
+            width:100px;
+            height: 30px;
+            align-content: center;
+            display: inline-block;
+            justify-content: space-between;
+            margin-top: 10px;
+            margin-right: 20px;
+        }
+            .search_comp .matter_sect .matter_option input[type="checkbox"]{
+                display: none;
+            }
+            .search_comp .matter_sect .matter_option input[type="checkbox"] + label{
+                background: url("../img/icons/icon_check_false.svg");
+                background-size: cover;
+                display: inline-block;
+                margin-right: 20px;
+                width:30px;
+                height:30px;
+            }
+            .search_comp .matter_sect .matter_option input[type="checkbox"] + label:hover{
+                cursor: pointer;
+            }
+            .search_comp .matter_sect .matter_option input[type="checkbox"]:checked + label{
+                background: url("../img/icons/icon_check_true.svg");
+                background-size: cover;
+                display: inline-block;
+                margin-right: 20px;
+                width:30px;
+                height:30px;
+                }
+            
+            .search_comp .matter_sect .matter_option p{
+                position: absolute;
+                display: inline-block;
+            }
+    .search_comp .AI_select_sect{}
+        .search_comp .sect_title{
+            margin-top: 25px;
+        }
+        .search_comp .AI_select_sect .input_container{
+            margin-top: 16px;
+        }
+        /* @media screen and (max-width:640px){
+            
+            .search_comp .AI_select_sect .input_container{
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+            }
+        } */
+        .search_comp .AI_select_sect input{
+            display: none;
+        }
+        .search_comp .AI_select_sect .AI_option+label{
+            width: 185px;
+            height: 70px;
+            background: url("../img/icons/btn_AI_false.svg");
+            background-size: cover;
+            display: inline-block;
+        }
+            .search_comp .AI_select_sect .AI_option+label:hover{
+                cursor: pointer;
+            }
+            .search_comp .AI_select_sect .AI_option:checked+label{
+                width: 185px;
+                height: 70px;
+                background: url("../img/icons/btn_AI_true.svg");
+                background-size: cover;
+                display: inline-block;
+            }
+        .search_comp .AI_select_sect .XAI_option+label{
+            width: 185px;
+            height: 70px;
+            background: url("../img/icons/btn_XAI_false.svg");
+            background-size: cover;
+            display: inline-block;
+        }
+            .search_comp .AI_select_sect .XAI_option+label:hover{
+                cursor: pointer;
+            }
+            .search_comp .AI_select_sect .XAI_option:checked+label{
+                width: 185px;
+                height: 70px;
+                background: url("../img/icons/btn_XAI_true.svg");
+                background-size: cover;
+                display: inline-block;
+            }
+    .search_comp .search_button_sect{
+        display: flex;
+        justify-content: end;
+        flex-wrap: wrap;
+        margin-top: 30px;
+    }
+        .search_comp .search_button_sect button{
+            height: 70px;
+            width: 168px;
+            border-radius: 35px;
+            border: none;
+            margin-left: 10px;
+        }
+            .search_comp .search_button_sect button:hover{
+                cursor: pointer;
+            }
+            .search_comp .search_button_sect button:first-child{
+                background-color: #EBEBEB;
+            }
+            .search_comp .search_button_sect button:last-child{
+                background-color: #315EFF;
+                color: white;
+                font-weight: 700;
+            }
+    @media screen and (max-width:640px){
+        .search_comp .search_button_sect{
+            display: absolute;
+            width:100%;
+            box-sizing: border-box;
+            left: 1rem;
+            
+        }
+        .search_comp .search_button_sect button{
+            width:100%;
+            height: 70px;
+            margin-top: 10px;
+            margin-left: 0px;
+            border-radius: 5px;
+        }
+    }
+
+

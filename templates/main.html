@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../static/CSS/base.css"  rel="stylesheet">
+    <link href="../static/CSS/main.css"  rel="stylesheet">
+    <title>good_air</title>
+</head>
+<body>
+    <h3 class="page_title">관측소 데이터 열람</h3>
+    <div class="search_comp">
+        <h3 class="comp_title">검색</h3>
+        <form>
+            <div class="palnt_ID_sect">
+                <p class="sect_title">관측소 ID 선택</p>
+                <input name="plant_ID" placeholder="지역 관측소 ID 입력" type="number">
+            </div>
+            <div name="matter_sect" class="matter_sect">
+                <p class="sect_title">관측할 성분</p> 
+                {% for matter in ["CO","O3","SO2","NOX","NO2","NO","PM10","PM2.5"] %}
+                    <div class="matter_option">
+                        <div style="display: inline-block;">
+                            <input id={{matter}} type="checkbox" name="matters" value={{matter}}>
+                            <label for="{{matter}}"></label>
+                        </div>
+                        <p>{{matter}}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="AI_select_sect">
+                <p class="sect_title">AI/XAI 옵션</p>
+                <div class="input_container">
+                    <input type="radio" name="AI_option" class="AI_option" id="AI" value="AI">
+                    <label for="AI"></label>
+                    <input type="radio" name="AI_option"class="XAI_option" id="XAI" value="AI">
+                    <label for="XAI"></label>
+                </div>
+            </div>
+            <div class="search_button_sect">
+                <button class="btn_reset" type="reset">초기화</button>
+                <button class="btn_search" type="searce">검색</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
