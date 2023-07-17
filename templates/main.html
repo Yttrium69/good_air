@@ -11,7 +11,7 @@
     <h3 class="page_title">관측소 데이터 열람</h3>
     <div class="search_comp">
         <h3 class="comp_title">검색</h3>
-        <form>
+        <form method="post" action="/">
             <div class="palnt_ID_sect">
                 <p class="sect_title">관측소 ID 선택</p>
                 <input name="plant_ID" placeholder="지역 관측소 ID 입력" type="number">
@@ -28,6 +28,50 @@
                     </div>
                 {% endfor %}
             </div>
+            <div class="date_sect">
+                <p class="sect_title">기간 선택</p>
+                <!-- <div class="start_end_container">
+                    {% for src in ["start", "end"] %}
+                    <div class="{{src}}">
+                        <div class="select_list">
+                            <select>
+                                {% for i in range(20) %}
+                                    <option name="{{src}}_year">{{2021-i}}</option>
+                                {% endfor %}
+                            </select>
+                            <span>년</span>
+                            <select>
+                                {% for i in range (1, 13) %}
+                                    <option name="{{src}}_month">{{i}}</option>
+                                {% endfor %}
+                            </select>
+                            <span>월</span>
+                            <select>
+                                {% for i in range (1, 32) %}
+                                    <option name="{{src}}_day">{{i}}</option>
+                                {% endfor %}
+                            </select>
+                            <span>일</span>
+                        </div>
+                        <span>
+                            {% if src == "start" %}
+                                <p style="display: inline-block; margin-top: 25px;">~</p>
+                            {% else %}
+                                <p></p>
+                            {% endif %}
+                        </span>
+                    </div>
+                    {% endfor %} 
+                </div>     -->    
+                <div class="date_container">
+                    <input name="start_date" type="date" min="2002-09-01" max="2021-12-31">
+                    <span class="label_start_date">~</span>
+                    <!-- <span class="swang_dash" style="display: inline-block;">~</span> -->
+                    <input name="end_date" type="date" min="2002-09-01" max="2021-12-31">
+                </div>
+                            
+            </div>
+            
             <div class="AI_select_sect">
                 <p class="sect_title">AI/XAI 옵션</p>
                 <div class="input_container">
@@ -39,7 +83,7 @@
             </div>
             <div class="search_button_sect">
                 <button class="btn_reset" type="reset">초기화</button>
-                <button class="btn_search" type="searce">검색</button>
+                <button class="btn_search" type="submit">검색</button>
             </div>
         </form>
     </div>

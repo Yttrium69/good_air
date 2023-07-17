@@ -67,21 +67,89 @@
                 position: absolute;
                 display: inline-block;
             }
-    .search_comp .AI_select_sect{}
+    .search_comp .date_sect{
+        display: inline-block;
+        width: 100%;
+        }
+        .search_comp .date_sect .date_container{
+            margin-top: 20px;
+        }
+            .search_comp .date_sect input{
+                width: 150px;
+                height: 70px;
+                border: 1px solid #b5b5b5;
+                border-radius: 50px;
+                padding: 0px 20px;
+            }
+                .search_comp .date_sect input:hover{
+                    cursor: pointer;
+                }
+            .search_comp .date_sect .label_start_date{
+                margin-left: 20px;
+                margin-right: 20px;
+                
+            }
+            @media screen and (max-width:640px){
+                .search_comp .date_sect .date_container{
+                    display: flex;
+                    /* width: 100%; */
+                    justify-content: space-between;
+                }
+                    .search_comp .date_sect .date_container input{
+                        width: 120px;
+                        height: 40px;
+                        background-color: rgb(239, 239, 239);
+                    }
+                    .search_comp .date_sect .date_container :is(.label_start_date){
+                        display: inline-block;
+                        line-height: 100%;
+                        text-align: center;
+                        margin: 0;
+                        padding-top: 10px;
+                    }
+                    .search_comp .date_sect .date_container :is(.label_end_date){
+                        display: none;
+                    }
+                    .search_comp .date_sect .date_container .swang_dash{
+                        display: inline-block;
+                        background-color: green;
+
+                    }
+            }
+        .search_comp .date_sect .start_end_container{
+            display: flex;
+            margin-top: 20px;
+        }
+            .search_comp .date_sect :is(.start, .end){
+                display: flex;
+            }
+                .search_comp .date_sect :is(.start, .end) select{
+                    box-sizing: content-box;
+                    height: 70px;
+                    padding-left: 10px;
+                    padding-right: 30px;
+                    background-color: #EBEBEB;
+                    border: none;
+                    border-radius: 5px;
+                    transition: 0.5s;
+                    margin-bottom: 10px;
+                }
+                .search_comp .date_sect :is(.start, .end) select:hover{
+                    cursor: pointer;
+                    background-color: #dedede;
+                }
+                .search_comp .date_sect :is(.start, .end) span{
+                    margin-right: 20px;
+                    margin-left: 10px;
+                }
+        .search_comp .AI_select_sect{}
         .search_comp .sect_title{
             margin-top: 25px;
         }
         .search_comp .AI_select_sect .input_container{
             margin-top: 16px;
         }
-        /* @media screen and (max-width:640px){
-            
-            .search_comp .AI_select_sect .input_container{
-                display: flex;
-                justify-content: space-between;
-                width: 100%;
-            }
-        } */
+        
         .search_comp .AI_select_sect input{
             display: none;
         }
