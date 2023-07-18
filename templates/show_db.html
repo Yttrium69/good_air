@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gogo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="../static/CSS/show_db.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<style>
+    input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+    .input_container{
+        font-size: 18px;
+    }
+    .input_container span{
+        font-weight: 700;
+    }
+    .input_box{
+        font-weight: 700;
+        font-size: 18px;
+        height: 50px;
+        width:80px;
+        /* border-radius: 10px; */
+        border: none;
+        border-bottom: 3px solid #ebebeb;
+        text-align: center;
+    }
+    .input_box::placeholder {
+        color: #ebebeb;
+    }
+    .input_box:focus{
+        outline: none;
+        border-bottom: 3px solid #2f2fd5;
+        box-shadow: none;
+    }
+    form button{
+        font-size: 18px;
+        height: 50px;
+        padding:0px 15px;
+        border-radius: 5px;
+        border: 1px solid #2f2fd5;;
+        color: #2f2fd5;
+        background-color: #FFFFFF;
+        transition: 0.5s;
+        margin-left:20px;
+        display: inline-block;
+    }
+    form button:hover{
+        cursor: pointer;
+        background-color: #eaeaff;
+    }
+    form{
+        margin-bottom: 20px;
+    }
+    select{
+        height: 50px;
+        padding-left: 10px;
+        font-size: 18px;
+        font-weight: 700;
+        border-radius: 5px;
+        margin-left:30px;
+        border: 1px solid #ebebeb;
+        display: inline-block;
+    }
+    select:hover{
+        cursor: pointer;
+    }
+</style>
+<body style = "color:#262626">
+    <p class="section_title" style = "font-weight: 700; font-size: 28px; margin:30px 0px 30px 30px;"> {{item[0].__table__.name}} Database</p>
+    <form method="post" action="/">
+        <!-- <input required name="date" placeholder="날짜 입력(ex. 2002090101)"/>
+        <input required name="max_cnt" placeholder="최대 개수 입력 (ex. 10)"/>
+        <button type="submit">조회</button> -->
+        
+        <div class="input_container"style="margin-left:30px; display: inline-block; margin-right: 20px;">
+            <input type="number" class="input_box" required name="year" placeholder="2002"/>
+            <span class="flag_txt">년</span>
+        </div>
+        <div class="input_container" style="display: inline-block; margin-right: 20px;">
+            <input type="number" class="input_box" required name="month" placeholder="02"/>
+            <span class="flag_txt">월</span>
+        </div>
+        <div class="input_container" style="display: inline-block; margin-right: 20px;">
+            <input type="number" class="input_box" required name="date" placeholder="02"/>
+            <span class="flag_txt">일</span>
+        </div>
+        <div class="input_container" style="display: inline-block; margin-right: 20px;" >
+            <input type="number" class="input_box" required name="hour" placeholder="22"/>
+            <span class="flag_txt">시</span>
+        </div>
+        <div style="display: inline-block;">
+            <select name="max_cnt">
+                <option value="5">5개</option>
+                <option value="10">10개</option>
+                <option value="15">15개</option>
+                <option value="20">20개</option>
+                <option value="25">25개</option>
+                <option value="30">30개</option>
+            </select>
+        </div>
+        <button type="submit">조회</button>
+    </form>
+    <table class="show_db">
+        <tr class="table_header">
+            <td style = "font-weight: 700;" class="weight_700">index</td>
+            {%for key in item[0].__dict__%}
+                {%if loop.index!=1%}
+                    <td style = "font-weight: 700;" class="weight_700">{{key}}</td>
+                {%endif%}
+            {%endfor%}
+        </tr>        
+        {%for  obj in item%}
+            <tr  class="table_body">
+                <td>{{loop.index}}</td>
+                {%for key in obj.__dict__%}
+                    {%if loop.index!=1%}
+                        <td>{{obj.__dict__[key]}}</td>
+                    {%endif%}
+                {%endfor%}
+            </tr>
+        {%endfor%}
+    </table>    
+</body>
+</html>

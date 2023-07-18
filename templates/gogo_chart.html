@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang='ko'>
+
+<head>
+    <meta charset='UTF-8'>
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+    <div id="chart_sect">
+        <!-- <canvas id="myChart"></canvas> -->
+    </div>
+
+    <script>
+        const chart_sect = document.getElementById('chart_sect');
+        
+
+        async function get_promise() {
+            let response = await fetch('http://127.0.0.1:5000/gogo');
+            let data = await response.json();
+            return await data;
+        }
+        get_promise().then((result) => {
+            const chart_sect = document.getElementById('chart_sect');
+            for (let i = 0; i < result.length; i++) {
+                let new_child = document.createElement(`canvas`)
+                let gogo = chart_sect.appendChild(new_child)
+                let now_item = result[i]
+                let matter_name = Object.keys(now_item)[0]
+                let data_arr = Object.values(now_item)[0]
+                let day_arr = data_arr.map((item) => { return Object.keys(item)[0] });
+                let dnsty_arr = data_arr.map((item) => { return Object.values(item)[0] });
+                console.log(data_arr)
+                console.log(day_arr)
+                console.log(dnsty_arr)
+
+                new Chart(gogo, {
+                    type: 'line',
+                    data: {
+                        labels: day_arr,
+                        datasets: [{
+                            label: matter_name,
+                            data: dnsty_arr,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+
+        })
+    </script>
+
+</body>
+
+</html>
+
+

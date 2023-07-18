@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% for matter_obj in item %}
+    <div class="matter">
+        {% set now_matter =  matter_obj.keys()|first|string%}
+        <h1>{{now_matter}}</h1>
+        {% for today_obj in matter_obj[now_matter] %}
+            {% set today =  today_obj.keys()|first|string%}
+            {% set today_dnsty =  today_obj[today]%}
+            <span style="color: blue;">{{today}}</span>
+            <span>{{today_dnsty}}</span>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</body>
+</html>
