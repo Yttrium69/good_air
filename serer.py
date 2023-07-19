@@ -3,11 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 import pandas as pd
 from model import AisDataAir
 from methods import parse_date, dnsty_of
-from classes import Search_form
+from config import db_src
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://ais:aisUser1%40%40@e2m3.iptime.org:5432/airinfo'
+app.config['SQLALCHEMY_DATABASE_URI'] = db_src
 db = SQLAlchemy()
 Base = db.Model
 
