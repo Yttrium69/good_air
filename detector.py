@@ -1,5 +1,5 @@
 # from pytest import param
-# from sklearn.pipeline import Pipeline
+from sklearn.pipeline import Pipeline
 import numpy as np
 import pandas as pd
 from rules.reverse_pm import Reverse_pm

@@ -236,7 +236,17 @@ def load_query(search_form, near_plants):
 
 @app.route('/', methods = ['GET', 'POST'])
 def main():
-    return render_template('main.html', graphJSON=draw_plot())
+    global data
+    data = pd.read_csv('sample.csv')
+    data['MDATETIME'] = pd.to_datetime(data['MDATETIME'].to_numpy(copy=True))
+    data = data.loc[:4320]
+    checked_plants_list = [111121]
+    elems_left.clear()
+    elems_right.clear()
+    with open('./config/서울특별시.json', 'r') as f:
+        ruleset = json.load(f)
+    return render_template('show_data.html', priority_arr = "[]", graphJSON=draw_plot(), date={"start":'2010-10', "end":'2010-12'},
+                            Same_value=ruleset['Same_value'], NO_rate=ruleset['NO_rate'], Near_station=ruleset['Near_station'], PM_reverse=ruleset['PM_Reverse'], Sudden_chg=ruleset['Sudden_chg'])
 
 @app.route('/click_near_plant', methods = ['GET', 'POST'])
 def click_near_plant():
@@ -257,21 +267,7 @@ def check_rule():
         checked_rules.append(checked_rule)
     return ''
 
-@app.get('/show_data')
-def show_data():
-    global data
-    data = pd.read_csv('sample.csv')
-    data['MDATETIME'] = pd.to_datetime(data['MDATETIME'].to_numpy(copy=True))
-    data = data.loc[:4320]
-    checked_plants_list = [111121]
-    elems_left.clear()
-    elems_right.clear()
-    with open('./config/서울특별시.json', 'r') as f:
-        ruleset = json.load(f)
 
-    return render_template('show_data.html', graphJSON=draw_plot(),
-                            big_religion=search_form_node.big_religion, middle_religion=search_form_node.middle_religion,
-                            Same_value=ruleset['Same_value'], NO_rate=ruleset['NO_rate'], Near_station=ruleset['Near_station'], PM_reverse=ruleset['PM_Reverse'], Sudden_chg=ruleset['Sudden_chg'])
 
 @app.route('/change_religion', methods = ['GET', 'POST'])
 def change_religion():
@@ -294,6 +290,19 @@ def get_same_value():
     return jsonify(ruleset)
 
 
+@app.get('/show_data')
+def show_data():
+    global data
+    data = pd.read_csv('sample.csv')
+    data['MDATETIME'] = pd.to_datetime(data['MDATETIME'].to_numpy(copy=True))
+    data = data.loc[:4320]
+    checked_plants_list = [111121]
+    elems_left.clear()
+    elems_right.clear()
+    with open('./config/서울특별시.json', 'r') as f:
+        ruleset = json.load(f)
+    return render_template('show_data.html', priority_arr = "[]", graphJSON=draw_plot(), date={"start":'2010-10', "end":'2010-12'},
+                            Same_value=ruleset['Same_value'], NO_rate=ruleset['NO_rate'], Near_station=ruleset['Near_station'], PM_reverse=ruleset['PM_Reverse'], Sudden_chg=ruleset['Sudden_chg'])
 @app.post('/show_data')
 def show_data_post():
     global search_form_node
@@ -312,15 +321,20 @@ def show_data_post():
     checked_rules2 = checked_rules.copy()
     checked_rules.clear()
 
-    date = {
-        "start_year":search_form_node.start_year,
-        "start_month":search_form_node.start_month,
-        "end_year":search_form_node.end_year,
-        "end_month":search_form_node.end_month
-    }
+    # date = {
+    #     "start_year":search_form_node.start_year,
+    #     "start_month":search_form_node.start_month,
+    #     "end_year":search_form_node.end_year,
+    #     "end_month":search_form_node.end_month
+    # }
+    
+    date = {"start":f'{search_form_node.start_year}-{search_form_node.start_month}', "end":f'{search_form_node.end_year}-{search_form_node.end_month}'}
+    
+    print(search_form_node.priority_arr)
 
-    return render_template('show_data.html', date=date, this_plant = search_form_node.plant_id, near_plants = near_plants, graphJSON=draw_plot(),
-                            big_religion=search_form_node.big_religion, middle_religion=search_form_node.middle_religion,
+    return render_template('show_data.html', date=date, this_plant = search_form_node.plant_id, near_plants = near_plants, graphJSON=draw_plot(), 
+                           priority_arr = search_form_node.priority_arr,
+                            big_religion=search_form_node.big_religion, middle_religion=search_form_node.middle_religion,small_religion = search_form_node.small_religion,
                             Same_value=ruleset['Same_value'], NO_rate=ruleset['NO_rate'], Near_station=ruleset['Near_station'], PM_reverse=ruleset['PM_Reverse'], Sudden_chg=ruleset['Sudden_chg'])
 
 @app.route('/matter_click_left', methods = ['GET', 'POST'])
@@ -377,11 +391,15 @@ def set_result():
 
     for i in range(1, 7):
         rule_node = Rules_table[f'{i}']
+        print("GOGOGOG")
+        print(rule_node)
         for matter in ['PM10', 'PM25', 'O3', 'SO2', 'CO', 'NO', 'NO2', 'NOX']:
             rule_node.set_element_detact_result(matter, tmp[tmp[f'{matter}_CODE'] == rule_code[i]]['AREA_INDEX'].size)
             rule_node.set_element_label(matter, tmp[tmp[f'{matter}_LABEL'] == rule_code[i]]['AREA_INDEX'].size)
             size1 = tmp[tmp[f'{matter}_CODE'] == rule_code[i]]['AREA_INDEX'].size
             size2 = tmp[(tmp[f'{matter}_LABEL'] == rule_code[i]) & (tmp[f'{matter}_CODE'] == rule_code[i])]['AREA_INDEX'].size
+            # size1 = 100
+            # size2 = 80
             print(size1, size2)
             if size1 == 0:
                 rule_node.set_element_detact_rate(matter, 0)

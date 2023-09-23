@@ -1,72 +1,77 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
-*{
+
+* {
     margin: 0;
     padding: 0;
     font-family: 'Noto Sans KR', sans-serif;
     font-weight: 400;
-    font-size:16px;
-    letter-spacing: -0.6px;
+    font-size: 16px;
+    /* letter-spacing: -0.6px; */
     color: #101010;
 }
 
-ul{
+ul {
     list-style-type: none;
 }
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
-input:focus{
+
+input:focus {
     outline: none;
     border: 1px solid #315EFF;
 }
-@media screen and (max-width:640px){
-    body{
-        margin:2rem 1rem;
+
+/* @media screen and (max-width:640px) {
+    body {
+        margin: 2rem 1rem;
     }
 }
 
 
-@media screen and (min-width:640px){
-    body{
-        margin:8rem;
+@media screen and (min-width:640px) {
+    body {
+        margin: 8rem;
     }
-}
+} */
 
 ::selection {
     background: rgb(255, 255, 0);
- }
+}
 
 
-.font_title{
+.font_title {
     font-family: 'Noto Sans KR', sans-serif;
     font-size: 24px;
     font-weight: 400;
 }
 
-.bold{
+.bold {
     font-weight: 700;
 }
 
-.blue{
+.blue {
     color: #315EFF;
 }
 
-.font_default{
+.font_default {
     font-family: 'Noto Sans KR', sans-serif;
     font-weight: 400;
     font-size: 16px;
 }
 
-.font_small{
+.font_small {
     font-size: 12px;
 }
-.b5b5b5{
+
+.b5b5b5 {
     color: #b5b5b5;
 }
 
-.btn_blue{
+.btn_blue {
     background-color: #315EFF;
     box-sizing: content-box;
     padding: 16px 23px;
@@ -77,12 +82,12 @@ input:focus{
     border: none;
 }
 
-.btn_blue:hover{
+.btn_blue:hover {
     background-color: #0c39ac;
     cursor: pointer;
 }
 
-.btn_blue_line{
+.btn_blue_line {
     background-color: white;
     box-sizing: content-box;
     padding: 16px 23px;
@@ -95,11 +100,11 @@ input:focus{
     border: none;
 }
 
-.btn_blue_line:hover{
+.btn_blue_line:hover {
     background-color: #0000000c;
     cursor: pointer;
 }
 
-.hide{
+.hide {
     display: none;
 }

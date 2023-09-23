@@ -1,6 +1,7 @@
 from pandas import to_datetime
 import pickle
 import datetime
+import ast
 
 def parse_date(date_to_parse):
     parsed_list = date_to_parse.split('-')
@@ -52,6 +53,7 @@ class search_form:
     plant_id = "000000"
     big_religion = '서울특별시'
     middle_religion = '서울특별시'
+    small_religion = ""
     plant_id = 111121
 
     def __init__(self, request_form=None):
@@ -69,6 +71,8 @@ class search_form:
             self.plant_id = request_form.get("small_religion").split('(')[1].split(')')[0]
             self.big_religion = request_form.get("big_religion")
             self.middle_religion = request_form.get("middle_religion")
+            print(request_form.get("rule_priority"))
+            self.priority_arr = ast.literal_eval(request_form.get("rule_priority"))
 
 def get_graph_data_json(plant_id_list):
     final_json = []

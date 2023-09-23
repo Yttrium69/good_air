@@ -66,15 +66,10 @@
             <button onclick="clicked_search_btn()" class="btn_blue">다시 검색</button>
         </div>
     </div>
-    <div class="page_search_modal">
+    <div class="hide page_search_modal">
         <div onclick="hide_parent_of(this)" class="sect_back_filter"></div>
         <div class="sect_search_modal">
             <p class="font_title">검색</p>
-            <script>
-                // $(document).ready(function () {
-                //     fill_up_small_religion();
-                // });
-            </script>
             <form method="post" action="/show_data">
                 <div class="div_religion">
                     <p>관측 지역</p>
@@ -104,21 +99,20 @@
                 <div class="div_period">
                     <p>관측 기간</p>
                     <div class="input_container">
-                        <input
-                            value="{% if date %}{{date.start_year}}{%endif%}-{% if date %}{{date.start_month}}{%endif%}"
-                            name="start_date" type="month" min="2002-09" max="2023-06">
+                        <input value={{date.start}} name="start_date" type="month" min="2002-09" max="2023-06">
                         <span class="label_start_date"> ~ </span>
-                        <input value="{% if date %}{{date.end_year}}{%endif%}-{% if date %}{{date.end_month}}{%endif%}"
-                            name="end_date" type="month" min="2002-09" max="2023-06">
+                        <input value={{date.end}} name="end_date" type="month" max="2023-06">
                     </div>
                 </div>
                 <div class="div_rulebase">
+                    <input class="rule_priority" name="rule_priority" value="{{priority_arr}}" style="display: none;">
                     <p>이상 증상</p>
                     <div class="input_container">
                         <div class="check_container">
                             <div class="check_option">
                                 <input id="rule2" type="checkbox" name="rule" value="rule2">
-                                <label onclick="clicked_check_btn(this)" data-rule="SameValue" for="rule2"></label>
+                                <label onclick="clicked_check_btn(this)" class="SameValue" data-rule="SameValue"
+                                    for="rule2"></label>
                                 <p>동일값 x 시간 이상 지속</p>
                             </div>
 
@@ -137,7 +131,8 @@
                         <div class="check_container">
                             <div class="check_option">
                                 <input id="rule1" type="checkbox" name="rule" value="rule1">
-                                <label onclick="clicked_check_btn(this)" data-rule="Reverse_PM" for="rule1"></label>
+                                <label onclick="clicked_check_btn(this)" class="Reverse_PM" data-rule="Reverse_PM"
+                                    for="rule1"></label>
                                 <p>PM10 > x1 : PM10 + x2 < PM2.5<br>PM10 <= x1 : PM10 + x3 < PM2.5</p>
                             </div>
                             <div class="check_option_standard">
@@ -153,7 +148,8 @@
                         <div class="check_container">
                             <div class="check_option">
                                 <input id="rule3" type="checkbox" name="rule" value="rule3">
-                                <label onclick="clicked_check_btn(this)" data-rule="Sudden_Chg" for="rule3"></label>
+                                <label onclick="clicked_check_btn(this)" class="Sudden_Chg" data-rule="Sudden_Chg"
+                                    for="rule3"></label>
                                 <p>표준편차 * k + 평균 < 편차 or <br> Threshold < 편차 (급격한 변화) </p>
                             </div>
                             <div class="check_option_standard">
@@ -169,7 +165,8 @@
                         <div class="check_container">
                             <div class="check_option">
                                 <input id="rule4" type="checkbox" name="rule" value="rule4">
-                                <label onclick="clicked_check_btn(this)" data-rule="Near_Station" for="rule4"></label>
+                                <label onclick="clicked_check_btn(this)" class="Near_Station" data-rule="Near_Station"
+                                    for="rule4"></label>
                                 <p>N개 주변 측정소 대비 x배 이상<br></p>
                             </div>
                             <div class="check_option_standard">
@@ -185,7 +182,8 @@
                         <div class="check_container">
                             <div class="check_option">
                                 <input id="rule6" type="checkbox" name="rule" value="rule6">
-                                <label onclick="clicked_check_btn(this)" data-rule="NO_rate" for="rule6"></label>
+                                <label onclick="clicked_check_btn(this)" class="NO_rate" data-rule="NO_rate"
+                                    for="rule6"></label>
                                 <p>NOx + x > NO2 + NO</p>
                             </div>
                             <div class="check_option_standard">
@@ -200,7 +198,8 @@
                         <div class="check_container">
                             <div class="check_option">
                                 <input id="rule5" type="checkbox" name="rule" value="rule5">
-                                <label onclick="clicked_check_btn(this)" data-rule="BaseLine" for="rule5"></label>
+                                <label onclick="clicked_check_btn(this)" class="BaseLine" data-rule="BaseLine"
+                                    for="rule5"></label>
                                 <p>베이스라인<br>(딥러닝)</p>
                             </div>
                         </div>

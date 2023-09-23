@@ -1,6 +1,15 @@
 $(document).ready(function () {
     $(".big_religion").on("change", fill_up_middle_religion);
     $(".middle_religion").on("click", fill_up_small_religion);
+
+
+
+    const priority_arr = JSON.parse($(".rule_priority").val().replace(/'/g, '"'));
+    for (let idx = 0; idx < priority_arr.length; idx++) {
+        $(`.${priority_arr[idx]}`).parent().addClass("selected");
+        change_rule_priority(priority_arr[idx], idx + 1)
+    }
+
 })
 
 function toggle_near_plant(target) {
@@ -16,7 +25,6 @@ function clicked_near_plant(target) {
             Plotly.newPlot('chart', result, { staticPlot: true });;
         }
     });
-    // console.log(get_selected_plants());
 }
 
 function clicked_axis(target) {
@@ -47,15 +55,43 @@ function clicked_axis_matter_left(target) {
 
 function clicked_check_btn(target) {
     fetch(`/check_rule?checked=${$(target).data("rule")}`)
+    let was_selected = false;
+    $(target).parent().hasClass("selected") ? was_selected = true : was_selected = false;
 
-    if ($(target).prev().is(':checked')) {
-        $(target).removeClass("selected")
-        $(target).css("background", "url('../static/img/icons/icon_check_false.svg')");
+    if (was_selected) {
+        $(target).parent().removeClass("selected");
+        remove_me_priority_list($(target).data("rule"));
+        $(target).css("background", `url("../static/img/icons/icon_check_false.svg")`);
     }
     else {
-        $(target).addClass("selected");
-        $(target).css("background", `url('../static/img/icons/icon_check_true_${$('.div_rulebase .selected').length}.svg')`);
+        $(target).parent().addClass("selected");
+        const priority = push_me_priority_list($(target).data("rule"));
+        $(target).css("background", `url("../static/img/icons/icon_check_true_${priority}.svg")`);
     }
+}
+
+function push_me_priority_list(rule_id) {
+    console.log($(".rule_priority").val())
+    let priority_arr = JSON.parse($(".rule_priority").val().replace(/'/g, '"'));
+    priority_arr.push((rule_id));
+    console.log(priority_arr);
+    $(".rule_priority").val(`${JSON.stringify(priority_arr)}`);
+    return priority_arr.length;
+}
+
+function remove_me_priority_list(rule_id) {
+    const priority_arr = JSON.parse($(".rule_priority").val().replace(/'/g, '"'));
+    const priority_arr_removed_target = priority_arr.filter(element => element !== rule_id)
+    for (let idx = 0; idx < priority_arr_removed_target.length; idx++) {
+        change_rule_priority(priority_arr_removed_target[idx], idx + 1)
+
+    }
+    $(".rule_priority").val(`${JSON.stringify(priority_arr_removed_target)}`);
+}
+
+function change_rule_priority(rule_id, priority) {
+    console.log(rule_id)
+    $(`.check_container .${rule_id}`).css("background", `url("../static/img/icons/icon_check_true_${priority}.svg")`);
 }
 
 function clicked_axis_matter_right(target) {
@@ -128,8 +164,8 @@ function fill_up_small_religion() {
     $(".small_religion").empty();
     small_religions.map(function (religion) { $(".small_religion").append(`<option value="${keys_of(religion)} (${Object.values(religion).toString()})">${keys_of(religion)} (${Object.values(religion).toString()})</option>`) });
 
-    // $(".pre_small_religion").val(religion);
-    // $(".pre_small_religion").innerText(religion);
+    $(".pre_small_religion").val(religion);
+    $(".pre_small_religion").innerText(religion);
 }
 
 function keys_of(json) {
@@ -195,3 +231,4 @@ function changed_multiple_of_matter(self) {
         .then(response => { console.log(response) });
 
 }
+
