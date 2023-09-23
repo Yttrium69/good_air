@@ -6,12 +6,15 @@
   margin-top: 33px;
   width: 100%;
 }
+
 .sect_near_plant .container_plant_element {
   margin-top: 21px;
 }
+
 .sect_near_plant .container_plant_element::-webkit-scrollbar {
   display: none;
 }
+
 .sect_near_plant .container_plant_element .tag {
   display: inline-block;
   padding: 7px 14px;
@@ -22,13 +25,16 @@
   border: 1px solid #b5b5b5;
   color: #b5b5b5;
 }
+
 .sect_near_plant .container_plant_element .tag.selected {
   border: 1px solid #315EFF;
   color: #315EFF;
 }
+
 .sect_near_plant .container_plant_element .tag.selected p {
   color: #315EFF;
 }
+
 .sect_near_plant .container_plant_element .tag:hover {
   cursor: pointer;
 }
@@ -39,6 +45,7 @@
   align-items: center;
   position: relative;
 }
+
 .sect_show_graph .left_axis_selection,
 .sect_show_graph .right_axis_selection {
   position: absolute;
@@ -51,30 +58,36 @@
   text-align: center;
   box-sizing: content-box;
 }
+
 .sect_show_graph .left_axis_selection.left_axis_selection,
 .sect_show_graph .right_axis_selection.left_axis_selection {
   left: 80px;
 }
+
 .sect_show_graph .left_axis_selection.right_axis_selection,
 .sect_show_graph .right_axis_selection.right_axis_selection {
   right: 70px;
   top: 120px;
 }
+
 .sect_show_graph .axis_matter_multiple_pack {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
 .sect_show_graph .left_axis_selection li:hover,
 .sect_show_graph .right_axis_selection li:hover {
   cursor: pointer;
   color: #315EFF;
 }
+
 .sect_show_graph .left_axis_selection li.selected,
 .sect_show_graph .right_axis_selection li.selected {
   color: #315EFF;
   font-weight: 700;
 }
+
 .sect_show_graph .left_axis_selection li input,
 .sect_show_graph .right_axis_selection li input {
   border: 1px solid #b5b5b5;
@@ -84,21 +97,25 @@
   margin-top: 10px;
   text-align: center;
 }
-.sect_show_graph .left_axis_selection li input + li,
-.sect_show_graph .right_axis_selection li input + li {
+
+.sect_show_graph .left_axis_selection li input+li,
+.sect_show_graph .right_axis_selection li input+li {
   display: inline-block;
   margin-left: 10px;
 }
+
 .sect_show_graph .left_axis,
 .sect_show_graph .right_axis {
   writing-mode: vertical-rl;
   text-orientation: upright;
   margin: 0px 20px;
 }
+
 .sect_show_graph .left_axis:hover,
 .sect_show_graph .right_axis:hover {
   cursor: pointer;
 }
+
 .sect_show_graph #chart_sect img {
   width: 100%;
 }
@@ -109,6 +126,7 @@
   justify-content: end;
   margin-top: 50px;
 }
+
 .sect_btns button:not(:last-child) {
   margin-right: 10px;
 }
@@ -117,6 +135,7 @@
   width: 100%;
   height: 100vh;
 }
+
 .page_search_modal .sect_back_filter {
   background-color: rgba(0, 0, 0, 0.7);
   width: 100vw;
@@ -126,6 +145,7 @@
   left: 0;
   top: 0;
 }
+
 .page_search_modal .sect_search_modal {
   left: 50%;
   top: 50%;
@@ -140,39 +160,49 @@
   padding: 30px;
   overflow-y: scroll;
 }
+
 .page_search_modal .sect_search_modal .div_religion {
   margin-top: 30px;
 }
+
 .page_search_modal .sect_search_modal .div_religion .input_container {
   margin-top: 15px;
 }
+
 .page_search_modal .sect_search_modal .div_religion .input_container select {
   padding: 10px 12px;
   border: 1px solid #b5b5b5;
   border-radius: 5px;
   outline: none;
 }
+
 .page_search_modal .sect_search_modal .div_religion .input_container select:hover {
   cursor: pointer;
 }
+
 .page_search_modal .sect_search_modal .div_period {
   margin-top: 30px;
 }
+
 .page_search_modal .sect_search_modal .div_period .input_container {
   margin-top: 15px;
 }
+
 .page_search_modal .sect_search_modal .div_period .input_container input {
   padding: 10px 12px;
   border: 1px solid #b5b5b5;
   border-radius: 5px;
   outline: none;
 }
+
 .page_search_modal .sect_search_modal .div_period .input_container input:hover {
   cursor: pointer;
 }
+
 .page_search_modal .sect_search_modal .div_rulebase {
   margin-top: 30px;
 }
+
 .page_search_modal .sect_search_modal .div_rulebase .input_container {
   margin-top: 15px;
   display: grid;
@@ -181,14 +211,17 @@
   column-gap: 40px;
   row-gap: 20px;
 }
+
 .page_search_modal .sect_search_modal .div_rulebase .input_container .check_container:nth-child(1) {
   grid-column: 1/span 3;
 }
+
 .page_search_modal .sect_search_modal .div_rulebase .input_container .label_input_pack {
   display: flex;
   align-items: center;
   margin-bottom: 30px;
 }
+
 .page_search_modal .sect_search_modal .div_rulebase .input_container .label_input_pack input {
   padding: 10px 12px;
   border: 1px solid #b5b5b5;
@@ -198,26 +231,32 @@
   width: 50px;
   margin-right: 15px;
 }
+
 .page_search_modal .sect_search_modal .div_rulebase .input_container .label_input_pack button {
   width: 74px;
   padding-left: 0;
   padding-right: 0;
 }
+
 .page_search_modal .sect_search_modal .div_priority {
   margin-top: 30px;
 }
+
 .page_search_modal .sect_search_modal .div_priority .input_container {
   display: flex;
   gap: 20px;
   margin-top: 12px;
 }
+
 .page_search_modal .sect_search_modal .div_priority .sect_priority {
   display: flex;
   align-items: center;
 }
+
 .page_search_modal .sect_search_modal .div_priority .sect_priority span {
   margin-right: 10px;
 }
+
 .page_search_modal .sect_search_modal .div_priority .sect_priority select {
   padding: 10px 12px;
   border: 1px solid #b5b5b5;
@@ -225,19 +264,24 @@
   outline: none;
   margin-left: 5px;
 }
+
 .page_search_modal .sect_search_modal .div_priority .sect_priority select:hover {
   cursor: pointer;
 }
+
 .page_search_modal .sect_search_modal .div_same_time {
   margin-top: 30px;
 }
+
 .page_search_modal .sect_search_modal .div_same_time .input_container {
   margin-top: 15px;
 }
+
 .page_search_modal input[type=checkbox] {
   display: none;
 }
-.page_search_modal input[type=checkbox] + label {
+
+.page_search_modal input[type=checkbox]+label {
   background: url("../img/icons/icon_check_false.svg");
   background-size: cover;
   display: inline-block;
@@ -245,10 +289,12 @@
   width: 30px;
   height: 30px;
 }
-.page_search_modal input[type=checkbox] + label:hover {
+
+.page_search_modal input[type=checkbox]+label:hover {
   cursor: pointer;
 }
-.page_search_modal input[type=checkbox]:checked + label {
+
+.page_search_modal input[type=checkbox]:checked+label {
   background: url("../img/icons/icon_check_true.svg");
   background-size: cover;
   display: inline-block;
@@ -256,10 +302,12 @@
   width: 30px;
   height: 30px;
 }
+
 .page_search_modal .check_option {
   margin-bottom: 10px;
   display: flex;
 }
+
 .page_search_modal .sect_search_modal .sect_btns {
   justify-content: center;
   margin-top: 30px;

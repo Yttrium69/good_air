@@ -12,8 +12,8 @@ function clicked_near_plant(target) {
     toggle_near_plant(target);
     target = $(target);
     $.getJSON({
-        url: "/click_near_plant", data: { 'plant' : $(target).text() }, success: function (result) {
-            Plotly.newPlot('chart', result, {staticPlot: true});;
+        url: "/click_near_plant", data: { 'plant': $(target).text() }, success: function (result) {
+            Plotly.newPlot('chart', result, { staticPlot: true });;
         }
     });
     // console.log(get_selected_plants());
@@ -39,20 +39,20 @@ function clicked_axis_matter_left(target) {
     target = $(target);
     target.hasClass("selected") ? target.removeClass("selected") : target.addClass("selected");
     $.getJSON({
-        url: "/matter_click_left", data: { 'matter' : $(target).text() }, success: function (result) {
-            Plotly.newPlot('chart', result, {staticPlot: true});;
+        url: "/matter_click_left", data: { 'matter': $(target).text() }, success: function (result) {
+            Plotly.newPlot('chart', result, { staticPlot: true });;
         }
     });
 }
 
-function clicked_check_btn(target){
+function clicked_check_btn(target) {
     fetch(`/check_rule?checked=${$(target).data("rule")}`)
 
-    if($(target).prev().is(':checked')){
+    if ($(target).prev().is(':checked')) {
         $(target).removeClass("selected")
         $(target).css("background", "url('../static/img/icons/icon_check_false.svg')");
     }
-    else{
+    else {
         $(target).addClass("selected");
         $(target).css("background", `url('../static/img/icons/icon_check_true_${$('.div_rulebase .selected').length}.svg')`);
     }
@@ -62,8 +62,8 @@ function clicked_axis_matter_right(target) {
     target = $(target);
     target.hasClass("selected") ? target.removeClass("selected") : target.addClass("selected");
     $.getJSON({
-        url: "/matter_click_right", data: { 'matter' : $(target).text() }, success: function (result) {
-            Plotly.newPlot('chart', result, {staticPlot: true});;
+        url: "/matter_click_right", data: { 'matter': $(target).text() }, success: function (result) {
+            Plotly.newPlot('chart', result, { staticPlot: true });;
         }
     });
 }
@@ -84,22 +84,22 @@ function hide_parent_of(target) {
     console.log($(target).parent())
 }
 
-function  fill_up_middle_religion() {
+function fill_up_middle_religion() {
     let gogo_json = JSON.parse(JSON.stringify(rel_json()));
     let big_religion = $(".big_religion").val();
     let middle_religions = gogo_json[big_religion];
     let middle_religion_list = keys_of(middle_religions);
     $(".middle_religion").empty();
-    
+
     fetch(`/get_same_value?big_religion=${big_religion}`).
-    then(response=>response.json())
-    .then(gogo_json=>{
-        console.log(gogo_json)
-    })
-    .then(final_value=>{
-        console.log(final_value)
-        $(".gogogo").val(final_value);
-    })
+        then(response => response.json())
+        .then(gogo_json => {
+            console.log(gogo_json)
+        })
+        .then(final_value => {
+            console.log(final_value)
+            $(".gogogo").val(final_value);
+        })
 
 
     middle_religion_list.map(function (religion) { $(".middle_religion").append(`<option  value="${religion}">${religion}</option>`) })
@@ -110,10 +110,10 @@ function  fill_up_middle_religion() {
 
 
     fetch(`/change_religion?big_religion=${big_religion}`)
-    .then(function(response){console.log("GOGOGOGO")})
-    .then(function(){
-    })
-    .catch(error=>{console.log(error)})
+        .then(function (response) { console.log("GOGOGOGO") })
+        .then(function () {
+        })
+        .catch(error => { console.log(error) })
 
 
 }
@@ -176,12 +176,12 @@ function clicked_check_option_standard(self) {
     }
 }
 
-function changed_multiple_of_matter(self){
+function changed_multiple_of_matter(self) {
     let matter = $(self).data("matter")
     let multiple_factor = self.value;
     let gogo_json = {
-        'matter':matter,
-        'multiple_factor':multiple_factor
+        'matter': matter,
+        'multiple_factor': multiple_factor
     }
     // $(`.multiple_of_${matter}`).val(multiple_factor);
 
@@ -192,6 +192,6 @@ function changed_multiple_of_matter(self){
         },
         body: JSON.stringify(gogo_json)
     })
-    .then(response=>{console.log(response)});
-    
+        .then(response => { console.log(response) });
+
 }
