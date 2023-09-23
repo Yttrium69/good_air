@@ -236,7 +236,7 @@ def load_query(search_form, near_plants):
 
 @app.route('/', methods = ['GET', 'POST'])
 def main():
-    return render_template('main.html', graphJSON=draw_plot())
+    return render_template('show_data.html', graphJSON=draw_plot())
 
 @app.route('/click_near_plant', methods = ['GET', 'POST'])
 def click_near_plant():
@@ -390,5 +390,10 @@ def set_result():
 
     return render_template("show_match_rate.html", rules_dict = Rules_table)
 
+# @app.get('/change_rule_priority')
+# def change_rule_priority():
+
+
 if __name__ == '__main__':
-    app.run(debug=True, host="165.246.44.130")
+#     app.run(debug=True, host="165.246.44.130")
+      app.run(debug=True, host="0.0.0.0")

@@ -47,7 +47,15 @@ function clicked_axis_matter_left(target) {
 
 function clicked_check_btn(target){
     fetch(`/check_rule?checked=${$(target).data("rule")}`)
-    console.log($(target).data("rule"))
+
+    if($(target).prev().is(':checked')){
+        $(target).removeClass("selected")
+        $(target).css("background", "url('../static/img/icons/icon_check_false.svg')");
+    }
+    else{
+        $(target).addClass("selected");
+        $(target).css("background", `url('../static/img/icons/icon_check_true_${$('.div_rulebase .selected').length}.svg')`);
+    }
 }
 
 function clicked_axis_matter_right(target) {
@@ -96,11 +104,18 @@ function  fill_up_middle_religion() {
 
     middle_religion_list.map(function (religion) { $(".middle_religion").append(`<option  value="${religion}">${religion}</option>`) })
 
+    $(".pre_middle_religion").val(religion);
+    $(".pre_middle_religion").innerText(religion);
+
+
+
     fetch(`/change_religion?big_religion=${big_religion}`)
     .then(function(response){console.log("GOGOGOGO")})
     .then(function(){
     })
     .catch(error=>{console.log(error)})
+
+
 }
 
 
@@ -112,6 +127,9 @@ function fill_up_small_religion() {
     let small_religions = gogo_json[big_religion][middle_religion];
     $(".small_religion").empty();
     small_religions.map(function (religion) { $(".small_religion").append(`<option value="${keys_of(religion)} (${Object.values(religion).toString()})">${keys_of(religion)} (${Object.values(religion).toString()})</option>`) });
+
+    // $(".pre_small_religion").val(religion);
+    // $(".pre_small_religion").innerText(religion);
 }
 
 function keys_of(json) {
