@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../static/CSS/base.css" rel="stylesheet">
+    <link href="../static/CSS/show_data.css" rel="stylesheet">
+    <title>대기환경데이터포털</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../static/JS/show_data.js"></script>
+    <script src="../static/JS/final_rel_json.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+    <div class="page_show_data">
+        <p class="title_of_page font_title bold">관측소 데이터 열람</p>
+        <p class="blue this_plant">{{this_plant}}</p>
+        <div class="sect_near_plant">
+            <p>주변 관측소</p>
+            <ul class="container_plant_element">
+                {% for plant in near_plants%}
+                <li onclick="clicked_near_plant(this)" class="tag">
+                    <p class="b5b5b5">{{plant}}</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="sect_show_graph">
+            <ul class="hide left_axis_selection">
+                {% set matters =["CO","O3","SO2","NOX","NO2","NO","PM10","PM2.5"] %}
+                {% for matter in matters %}
+                <div class="axis_matter_multiple_pack">
+                    <li onclick="clicked_axis_matter_left(this)" value="${matter}">{{matter}}
+                    </li>
+                    <input class="multiple_of_{{matter}}" onchange="changed_multiple_of_matter(this)" data-matter={{matter}} placeholder="* n" name="multiple_of_{{matter}}"></input>
+                </div>
+                {% endfor %}
+            </ul>
+            <span class="left_axis font_small b5b5b5" onclick="clicked_axis(this)">µg/m^2</span>
+            <div class="chart_div">
+                <div id="chart" class="chart"></div>
+                <div id="png_chart"></div>
+            </div>
+            <span onclick="clicked_axis(this)" class="right_axis font_small b5b5b5">µg/m^2</span>
+            <ul class="right_axis_selection hide">
+                {% set matters =["CO","O3","SO2","NOX","NO2","NO","PM10","PM2.5"] %}
+                {% for matter in matters %}
+                <div class="axis_matter_multiple_pack">
+                    <li onclick="clicked_axis_matter_right(this)" value="${matter}">{{matter}}
+                    </li>
+                    <input class="multiple_of_{{matter}}" onchange="changed_multiple_of_matter(this)" data-matter={{matter}} placeholder="* n" name="multiple_of_{{matter}}"></input>
+                </div>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="sect_btns">
+            <button class="btn_blue_line">모델 다운로드</button>
+            <button onclick="clicked_search_btn()" class="btn_blue">다시 검색</button>
+        </div>
+    </div>
+    <div class="page_search_modal">
+        <div onclick="hide_parent_of(this)" class="sect_back_filter"></div>
+        <div class="sect_search_modal">
+            <p class="font_title">검색</p>
+            <script>
+                $(document).ready(function () {
+                    fill_up_small_religion();
+                });
+            </script>
+            <form method="post" action="/show_data">
+                <div class="div_religion">
+                    <p>관측 지역</p>
+                    <div class="input_container">
+                        <select onclick="fill_up_middle_religion(this)" name="big_religion" class="big_religion">
+                            {% set religions = ["서울특별시", "세종특별자치시", "제주특별자치도","부산광역시", "대구광역시", "인천광역시", "광주광역시",
+                            "대전광역시", "울산광역시", "강원도", "경기도", "충청북도", "충청남도", "전라남도", "전라북도", "경상북도", "경상남도"] %}
+                            {% for religion in religions %}
+                            <option {% if big_religion==religion %} selected {% endif %} value={{religion}}>{{religion}}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <select name="middle_religion" class="middle_religion">
+                            <option>{{middle_religion}}</option>
+                        </select>
+                        <select name="small_religion" name="plant_id" class="small_religion">
+                            <option>{{small_religion}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="div_period">
+                    <p>관측 기간</p>
+                    <div class="input_container">
+                        <input value="{% if date %}{{date.start_year}}{%endif%}-{% if date %}{{date.start_month}}{%endif%}" name="start_date" type="month" min="2002-09" max="2023-06">
+                        <span class="label_start_date"> ~ </span>
+                        <input value="{% if date %}{{date.end_year}}{%endif%}-{% if date %}{{date.end_month}}{%endif%}" name="end_date" type="month" min="2002-09" max="2023-06">
+                    </div>
+                </div>
+                <div class="div_rulebase">
+                    <p>이상 증상</p>
+                    <div class="input_container">
+                        <div class="check_container">
+                            <div class="check_option">
+                                <input id="rule2" type="checkbox" name="rule" value="rule2">
+                                <label onclick="clicked_check_btn(this)" data-rule="SameValue" for="rule2"></label>
+                                <p>동일값 x 시간 이상 지속</p>
+                            </div>
+
+                            <div class="input_container">
+                                <div class="label_input_pack">
+                                    {%for matter in matters%}
+                                    <span>{{matter}}</span>
+                                    <input placeholder="time"  name="same_time_{{matter}}"></input>
+                                    {% endfor %}
+                                    <button data-rule_id="rule2" onclick="clicked_check_option_standard(this)" type="button"
+                                    class="btn_blue_line">저장</button>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="check_container">
+                            <div class="check_option">
+                                <input id="rule1" type="checkbox" name="rule" value="rule1">
+                                <label onclick="clicked_check_btn(this)" data-rule="Reverse_PM" for="rule1"></label>
+                                <p>PM10 > x1 : PM10 + x2 < PM2.5<br>PM10 <= x1 : PM10 + x3 < PM2.5</p>
+                            </div>
+                            <div class="check_option_standard">
+                                {% for standard in PM_reverse%}
+                                <input name="check_option_standard_1" data-key={{standard}}
+                                    value={{PM_reverse[standard]}} placeholder={{standard}}>
+                                {%endfor%}
+                                <button data-rule_id="rule1" onclick="clicked_check_option_standard(this)" type="button"
+                                    class="btn_blue_line">저장</button>
+                            </div>
+                        </div>
+                        
+                        <div class="check_container">
+                            <div class="check_option">
+                                <input id="rule3" type="checkbox" name="rule" value="rule3">
+                                <label onclick="clicked_check_btn(this)" data-rule="Sudden_Chg" for="rule3"></label>
+                                <p>표준편차 * k + 평균 < 편차 or <br> Threshold < 편차 (급격한 변화) </p>
+                            </div>
+                            <div class="check_option_standard">
+                                {% for standard in Sudden_chg%}
+                                <input name="check_option_standard_1" data-key={{standard}}
+                                    value={{Sudden_chg[standard]}} placeholder={{standard}}>
+                                {%endfor%}
+                                <button data-rule_id="rule3" onclick="clicked_check_option_standard(this)" type="button"
+                                    class="btn_blue_line">저장</button>
+                            </div>
+                        </div>
+                        
+                        <div class="check_container">
+                            <div class="check_option">
+                                <input id="rule4" type="checkbox" name="rule" value="rule4">
+                                <label onclick="clicked_check_btn(this)" data-rule="Near_Station" for="rule4"></label>
+                                <p>N개 주변 측정소 대비 x배 이상<br></p>
+                            </div>
+                            <div class="check_option_standard">
+                                {% for standard in Near_station %}
+                                <input name="check_option_standard_1" data-key={{standard}}
+                                    value={{Near_station[standard]}} placeholder={{standard}}>
+                                {%endfor%}
+                                <button data-rule_id="rule4" onclick="clicked_check_option_standard(this)" type="button"
+                                    class="btn_blue_line">저장</button>
+                            </div>
+                        </div>
+                        
+                        <div class="check_container">
+                            <div  class="check_option">
+                                <input id="rule6" type="checkbox" name="rule" value="rule6">
+                                <label  onclick="clicked_check_btn(this)" data-rule="NO_rate" for="rule6"></label>
+                                <p>NOx + x > NO2 + NO</p>
+                            </div>
+                            <div class="check_option_standard">
+                                {% for standard in NO_rate %}
+                                <input name="check_option_standard_1" data-key={{standard}} value={{NO_rate[standard]}}
+                                    placeholder={{standard}}>
+                                {%endfor%}
+                                <button data-rule_id="rule6" onclick="clicked_check_option_standard(this)" type="button"
+                                    class="btn_blue_line">저장</button>
+                            </div>
+                        </div>
+                        <div class="check_container">
+                            <div class="check_option">
+                                <input id="rule5" type="checkbox" name="rule" value="rule5">
+                                <label onclick="clicked_check_btn(this)" data-rule="BaseLine" for="rule5"></label>
+                                <p>베이스라인<br>(딥러닝)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="div_priority">
+                    <p>우선순위</p>
+                    <div class="input_container">
+                        {% for i in range(1, 7) %}
+                        <div class="sect_priority">
+                            {% if i!=1 %}<span>></span>{%endif%}
+                            {% set rules=["동일값 지속", "급격한 변화","PM역전","주변 측정소 대비 이상", "NO 비율 역전", "베이스라인 이상"] %}
+                            <select name="priority_{{i}}">
+                                {% for j in range(rules|length) %}
+                                <option value="{{rules[j]}}">{{rules[(j+i)%6]}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="sect_btns">
+                    <button type="submit" class="btn_blue">검색</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</body>
+
+<script>
+    d = {{ graphJSON | safe }};
+    //d.config={staticPlot: true};
+    Plotly.newPlot('chart', d, {});
+</script>
+
+</html>

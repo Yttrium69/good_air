@@ -1,8 +1,8 @@
-window.onload = function () {
-    console.log("GOGOGO")
-    const formElement = document.querySelector('form');
-    formElement.addEventListener('submit', submit_search);
-}
+// window.onload = function () {
+//     console.log("GOGOGO")
+//     const formElement = document.querySelector('form');
+//     formElement.addEventListener('submit', submit_search);
+// }
 
 
 function submit_search(event) {

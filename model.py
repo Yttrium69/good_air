@@ -1,9 +1,31 @@
 from sqlalchemy import CHAR, Column, Date, DateTime, Integer, LargeBinary, Numeric, String, Table, Text, text
 from sqlalchemy.ext.declarative import declarative_base
+import torch
+import torch.nn as nn
 
 Base = declarative_base()
 metadata = Base.metadata
 
+class AisDataAbnrm(Base):
+    __tablename__ = 'ais_data_air_abnrm'
+    __table_args__ = {'comment': '일반대기 측정망 이상 자료'}
+    
+    msrmt_ymdh = Column(String(10), primary_key=True, nullable=False, comment='\t측정년월일시')
+    msrstn_cd = Column(Numeric(6, 0), primary_key=True, nullable=False, comment='\t측정소코드')
+    cntmn_dtl_cd = Column(Numeric(5, 0), primary_key=True, nullable=False, comment='\t오염물질상세코드')
+    ft_cfmtn_flag = Column(String(2), comment='\t1차확정플래그')
+    ft_cfmtn_dtl_cd = Column(String(4), comment='\t1차확정상세코드')
+    ft_cfmtn_dnsty = Column(Numeric(24, 14), comment='\t1차확정농도')
+    abnrm_data_cn = Column(String(4000), comment='\t비정상자료내용')
+    abnrm_data_se_cd = Column(Numeric(2, 0), comment='\t비정상자료구분코드')
+    abnrm_data_yn_cd = Column(Numeric(1, 0), comment='\t비정상자료여부코드')
+    last_cfmtn_flag = Column(Numeric(2, 0), comment='\t최종확정FLAG')
+    last_cfmtn_dtl_cd = Column(String(4), comment='\t최종확정상세코드')
+    last_cfmtn_dnsty = Column(Numeric(24, 14), comment='\t최정확정농도')
+    last_abnrm_data_cn = Column(String(50), comment='\t최종비정상자료내용')
+    last_abnrm_data_rmk = Column(String(4), comment='\t최종비정상자료비고')
+    last_cfmtn_yn_cd = Column(Numeric(1), comment='\t최정확정여부코드')
+    last_abnrm_data_mdfcn_ymd = Column(String(8), comment='\t최종비정상자료수정일자')
 
 class AisDataAir(Base):
     __tablename__ = 'ais_data_air'
@@ -82,3 +104,82 @@ class AisDataAir(Base):
     tmpr6_dtl_flag = Column(Numeric(1, 0), comment='임시6상세플래그')
     tmpr6_dtl_cd = Column(String(4), comment='임시6상세코드')
     tmpr6_dnsty = Column(Numeric(24, 14), comment='임시6농도')
+
+class CBR_1D(nn.Module):
+    def __init__(self,in_channels,out_channels,kernel=9,stride=1,padding=4):
+        super().__init__()
+        self.seq_list = [
+        nn.Conv1d(in_channels,out_channels,kernel,stride,padding,bias=False),
+        nn.BatchNorm1d(out_channels),
+        nn.ReLU()]
+        
+        self.seq = nn.Sequential(*self.seq_list)
+        
+    def forward(self,x):
+        return self.seq(x)
+
+class Unet_1D(nn.Module):
+    def __init__(self,class_n,layer_n):
+        super().__init__()
+        
+        ### ------- encoder -----------
+        self.enc1_1 = CBR_1D(1,layer_n)
+        self.enc1_2 = CBR_1D(layer_n,layer_n)
+        self.enc1_3 = CBR_1D(layer_n,layer_n)
+        
+        self.enc2_1 = CBR_1D(layer_n,layer_n*2)
+        self.enc2_2 = CBR_1D(layer_n*2,layer_n*2)
+        
+        self.enc3_1 = CBR_1D(layer_n*2,layer_n*4)
+        self.enc3_2 = CBR_1D(layer_n*4,layer_n*4)
+        
+        self.enc4_1 = CBR_1D(layer_n*4,layer_n*8)
+        self.enc4_2 = CBR_1D(layer_n*8,layer_n*8)
+    
+        ### ------- decoder -----------
+        self.upsample_3 = nn.ConvTranspose1d(layer_n*8,layer_n*8,kernel_size=8,stride=2,padding=3)
+        self.dec3_1 = CBR_1D(layer_n*4+layer_n*8,layer_n*4)
+        self.dec3_2 = CBR_1D(layer_n*4,layer_n*4)
+        
+        self.upsample_2 = nn.ConvTranspose1d(layer_n*4,layer_n*4,kernel_size=8,stride=2,padding=3)
+        self.dec2_1 = CBR_1D(layer_n*2+layer_n*4,layer_n*2)
+        self.dec2_2 = CBR_1D(layer_n*2,layer_n*2)
+        
+        self.upsample_1 = nn.ConvTranspose1d(layer_n*2,layer_n*2,kernel_size=8,stride=2,padding=3)
+        self.dec1_1 = CBR_1D(layer_n*1+layer_n*2,layer_n*1)
+        self.dec1_2 = CBR_1D(layer_n*1,layer_n*1)
+        self.dec1_3 = CBR_1D(layer_n*1,class_n)
+        self.dec1_4 = CBR_1D(class_n,class_n)
+    
+    def forward(self,x):
+        enc1 = self.enc1_1(x)
+        enc1 = self.enc1_2(enc1)
+        enc1 = self.enc1_3(enc1)
+        
+        enc2 = nn.functional.max_pool1d(enc1,2)
+        enc2 = self.enc2_1(enc2)
+        enc2 = self.enc2_2(enc2)
+        
+        enc3 = nn.functional.max_pool1d(enc2,2)
+        enc3 = self.enc3_1(enc3)
+        enc3 = self.enc3_2(enc3)
+        
+        enc4 = nn.functional.max_pool1d(enc3,2)        
+        enc4 = self.enc4_1(enc4)
+        enc4 = self.enc4_2(enc4)
+        
+        dec3 = self.upsample_3(enc4)
+        dec3 = self.dec3_1(torch.cat([enc3,dec3],dim=1))
+        dec3 = self.dec3_2(dec3)
+        
+        dec2 = self.upsample_2(dec3)
+        dec2 = self.dec2_1(torch.cat([enc2,dec2],dim=1))
+        dec2 = self.dec2_2(dec2)
+        
+        dec1 = self.upsample_1(dec2)
+        dec1 = self.dec1_1(torch.cat([enc1,dec1],dim=1))
+        dec1 = self.dec1_2(dec1)
+        dec1 = self.dec1_3(dec1)
+        out = self.dec1_4(dec1)
+        
+        return out

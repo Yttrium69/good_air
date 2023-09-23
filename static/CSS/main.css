@@ -229,3 +229,14 @@
     }
 
 
+.chart_div{}
+    .chart_div button{
+        height: 70px;
+        width: 168px;
+        border-radius: 35px;
+        border: none;
+        margin-left: 10px;
+        background-color: #315EFF;
+        font-weight: 700;
+        color: #ffffff;
+    }

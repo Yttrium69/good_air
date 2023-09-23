@@ -9,6 +9,24 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../static/JS/gogo_chart.js"></script>
     <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function cb(selection) {
+            checkboxes = document.getElementsByName('matters')
+            matters = ""
+            for (i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    matters += checkboxes[i].value + ","
+                }
+            }
+            $.getJSON({
+                url: "/get_dnsty_json", data: { 'plant_ID': document.getElementsByName('plant_ID')[0].value, 'start_date': document.getElementsByName('start_date')[0].value, 'end_date': document.getElementsByName('end_date')[0].value, 'matters': matters, 'AI_option': document.getElementsByName('AI_option')[0].value }, success: function (result) {
+                    Plotly.newPlot('chart', result, {staticPlot: true});;
+                }
+            });
+        }
+    </script>
 </head>
 <body>
     <h3 class="page_title">관측소 데이터 열람</h3>
@@ -37,8 +55,7 @@
                     <input name="start_date" type="date" min="2002-09-01" max="2021-12-31">
                     <span class="label_start_date">~</span>
                     <input name="end_date" type="date" min="2002-09-01" max="2021-12-31">
-                </div>
-                            
+                </div>            
             </div>
             
             <div class="AI_select_sect">
@@ -52,12 +69,22 @@
             </div>
             <div class="search_button_sect">
                 <button class="btn_reset" type="reset">초기화</button>
-                <button id="btn_search"  type="submit">검색</button>
+                <button id="btn_search" type="button" onclick="cb()" >검색</button>
             </div>
         </form>
     </div>
-    <div id="chart_sect">
-
+    <div class="chart_div">
+        <div id="chart" class="chart"></div>
+        <div id="png_chart"></div>
+        <button id="ssdf" type="button" onclick="cb()" >모델 다운로드</button>
     </div>
+
 </body>
+
+<script>
+    d = {{ graphJSON | safe }};
+    //d.config={staticPlot: true};
+    Plotly.newPlot('chart', d, {});
+</script>
+
 </html>

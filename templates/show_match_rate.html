@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>result</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="../static/CSS/show_db.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    {% for rule in [ rules_dict["1"],  rules_dict["2"],  rules_dict["3"], rules_dict["4"], rules_dict["5"],  rules_dict["6"]] %}
+<table border>
+    <th colspan="4">
+        {{rule.title}}
+    </th>
+    <tr>
+        <th>원소명</th>
+        <td>탐지결과</td>
+        <td>label</td>
+        <td>일치율</td>
+    </tr>
+    {% set matters =["CO","O3","SO2","NOX","NO2","NO","PM10","PM25"] %}
+    {% for matter in matters %}
+    {% set cur_element = rule.elements[matter]%}
+    <tr>
+        <th>{{cur_element.name}}</th>
+        <td>{{cur_element.detact_result}}</td>
+        <td>{{cur_element.label}}</td>
+        <td>{{cur_element.match_rate}}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+{% endfor %}
+</body>
+</html>

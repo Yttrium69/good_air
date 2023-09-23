@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+    <script>
+        function cb1(selection) {
+            fetch(`/button1_select`)
+        }
+        function cb2(selection) {
+            fetch(`/button2_select`)
+        }
+    </script>
+</head>
+
+<body>
+    <div class="sect_btns">
+        <button onclick="cb1()" class="btn_blue">Button</button>
+        <button onclick="cb2()" class="btn_blue">Button</button>
+    </div>
+</body>
+
+</html>
